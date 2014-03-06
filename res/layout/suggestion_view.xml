@@ -1,0 +1,11 @@
+<GridView xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/suggestionGrid"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:columnWidth="70dp"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="1dp"
+    android:horizontalSpacing="5dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center"
+/>

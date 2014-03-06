@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical">
+
+    <EditText android:id="@+id/scan_suggestion_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/scan_suggestion_message"/>
+
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="scanSystemFolder"
+        android:text="@string/system_folder_scanning_button" />
+
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/entire_device_scanning_button"
+        android:onClick="scanEntireDevice"/>
+
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/browse_scanning_button"
+        android:onClick="browseWhatToScan"/>
+</LinearLayout>
