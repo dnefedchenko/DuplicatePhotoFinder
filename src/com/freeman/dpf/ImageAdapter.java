@@ -34,11 +34,13 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
     private List<ComparableThumbnail> thumbnails;
     private LayoutInflater inflater;
+    private List<Integer> remainingThumbnailIndices;
 
     public ImageAdapter(Context context, ArrayList<String> photos) {
         this.context = context;
         this.thumbnails = new ArrayList<ComparableThumbnail>();
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        remainingThumbnailIndices = new ArrayList<Integer>();
         createPhotoThumnbails(photos);
         Collections.sort(thumbnails, new ThumbnailComparator());
     }
@@ -134,29 +136,38 @@ public class ImageAdapter extends BaseAdapter {
 //            imageView = (ImageView) convertView;
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.thumbanilView.setId(position);
-//        holder.photoSize.setId(position);
-//        holder.checkbox.setId(position);
-        holder.selectedThumbnail.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox checkbox = (CheckBox) v;
-                int selectedThumbnail = checkbox.getId();
-            }
-        });
+
         ComparableThumbnail thumbnail  = thumbnails.get(position);
         holder.thumbanilView.setImageBitmap(thumbnail.getThumbnail());
         holder.photoSize.setText(thumbnail.getSize());
         holder.lastModified.setText(formatter.format(thumbnail.getLastModified()));
         holder.selectedThumbnail.setChecked(thumbnail.isSelected());
         holder.selectedThumbnail.setId(position);
-        holder.id = position;
+
+        holder.selectedThumbnail.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkbox = (CheckBox) v;
+
+                if (!checkbox.isChecked()) {
+                    remainingThumbnailIndices.remove(Integer.valueOf(checkbox.getId()));
+                } else {
+                    remainingThumbnailIndices.add(checkbox.getId());
+                }
+            }
+        });
+        processThumbnailState();
 
         return convertView;
     }
 
+    private void processThumbnailState() {
+        for(Integer index: remainingThumbnailIndices) {
+            thumbnails.get(index).setSelected(true);
+        }
+    }
+
     class ViewHolder {
-        int id;
         ImageView thumbanilView;
         TextView photoSize;
         TextView lastModified;
