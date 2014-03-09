@@ -1,6 +1,7 @@
-package com.freeman.dpf.sort.date;
+package com.freeman.dpf.model;
 
 import java.util.Comparator;
+
 
 public class ThumbnailComparator implements Comparator<ComparableThumbnail> {
     @Override

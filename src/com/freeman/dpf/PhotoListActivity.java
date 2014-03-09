@@ -2,12 +2,9 @@ package com.freeman.dpf;
 
 import java.util.ArrayList;
 
-import com.freeman.dpf.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -25,12 +22,13 @@ public class PhotoListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.suggestion_view);
+        setContentView(R.layout.photo_selection_view);
 
         Intent intentToListAllDcimPhotos = getIntent();
         ArrayList<String> photoPaths = intentToListAllDcimPhotos.getStringArrayListExtra(MainActivity.PHOTO_EXTRAS);
 
-        GridView suggestionGrid = (GridView) findViewById(R.id.suggestionGrid);
+//        GridView suggestionGrid = (GridView) findViewById(R.id.suggestionGrid);
+        GridView suggestionGrid = (GridView) findViewById(R.id.thumbnailsGrid);
         suggestionGrid.setAdapter(new ImageAdapter(this, photoPaths));
 
         suggestionGrid.setOnItemClickListener(new OnItemClickListener() {
@@ -38,14 +36,5 @@ public class PhotoListActivity extends Activity {
                 Toast.makeText(PhotoListActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.suggestion_view, R.id.label, photos);
-//        setListAdapter(adapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.photo_list, menu);
-        return true;
     }
 }

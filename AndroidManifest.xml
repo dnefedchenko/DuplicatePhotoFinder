@@ -34,7 +34,7 @@
             android:label="@string/title_activity_photo_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.freeman.tutorialapp.MainActivity" />
+                android:value="com.freeman.dpf.MainActivity" />
         </activity>
     </application>
 
