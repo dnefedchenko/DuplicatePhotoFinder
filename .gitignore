@@ -1,5 +1,6 @@
 /target
 /bin
+/assets
 .classpath
 .project
 .settings

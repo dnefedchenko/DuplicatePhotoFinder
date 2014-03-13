@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -20,16 +23,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.freeman.dpf.model.ComparableThumbnail;
 import com.freeman.dpf.model.ThumbnailComparator;
 
 public class ImageAdapter extends BaseAdapter {
-    private final double KILO_PREFIX = 1024;
+    private final double KILO_PREFIX = 1024.0;
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
     private Context context;
     private List<ComparableThumbnail> thumbnails;
@@ -43,6 +48,49 @@ public class ImageAdapter extends BaseAdapter {
         remainingThumbnailIndices = new ArrayList<Integer>();
         createPhotoThumnbails(photos);
         Collections.sort(thumbnails, new ThumbnailComparator());
+        splitOnGroupsByDateSimilarity();
+    }
+
+    private void splitOnGroupsByDateSimilarity() {
+        ListIterator<ComparableThumbnail> iterator = thumbnails.listIterator();
+        int previousYear = -1;
+        int previousMonth = 0;
+        int previousDay = 0;
+        int previousHour = 0;
+        int previousMinute = 0;
+        int previousSecond = 0;
+        double totalGroupSize = 0;
+
+        while (iterator.hasNext()) {
+            ComparableThumbnail thumbnail = iterator.next();
+            Calendar lastModified = Calendar.getInstance();
+            lastModified.setTime(thumbnail.getLastModified());
+
+            int year = lastModified.get(Calendar.YEAR);
+            int month = lastModified.get(Calendar.MONTH);
+            int day = lastModified.get(Calendar.DATE);
+            int hour = lastModified.get(Calendar.HOUR);
+            int minute = lastModified.get(Calendar.MINUTE);
+            int second = lastModified.get(Calendar.SECOND);
+
+            if (previousYear == -1 || previousYear == year && previousMonth == month && previousDay == day
+                    && previousHour == hour && (previousMinute == minute || Math.abs(previousMinute - minute) <= 2)
+                    && (previousSecond == second || Math.abs(previousSecond - second) < 60)){
+                totalGroupSize += Double.parseDouble(thumbnail.getSize().substring(0, thumbnail.getSize().lastIndexOf('M')-1));
+            } else {
+                iterator.previous();
+                iterator.add(new ComparableThumbnail(null, 0, String.valueOf(totalGroupSize)+" MB"));
+                iterator.next();
+                totalGroupSize = 0;
+            }
+
+            previousYear = year;
+            previousMonth = month;
+            previousDay = day;
+            previousHour = hour;
+            previousMinute = minute;
+            previousSecond = second;
+        }
     }
 
     private void createPhotoThumnbails(ArrayList<String> photos) {
@@ -53,14 +101,14 @@ public class ImageAdapter extends BaseAdapter {
             String photoSize = extractSize(photoFile);
             try {
                 if (thumbnailPath.exists()) {
-                    ComparableThumbnail thumbnail = new ComparableThumbnail(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(thumbnailPath.getAbsolutePath()), 100, 100), lastModified, photoSize, false); 
+                    ComparableThumbnail thumbnail = new ComparableThumbnail(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(thumbnailPath.getAbsolutePath()), 100, 100), lastModified, photoSize); 
                     thumbnails.add(thumbnail);
                     continue;
                 }
                 Bitmap thumbnail = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photo), 100, 100);
                 FileOutputStream out = new FileOutputStream(thumbnailPath);
                 thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                thumbnails.add(new ComparableThumbnail(thumbnail, lastModified, photoSize, false));
+                thumbnails.add(new ComparableThumbnail(thumbnail, lastModified, photoSize));
                 out.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -73,7 +121,8 @@ public class ImageAdapter extends BaseAdapter {
     @SuppressLint("DefaultLocale")
     private String extractSize(File photoFile) {
         double bytes = photoFile.length();
-        return String.format("%.1g MB%n", bytes/KILO_PREFIX/KILO_PREFIX);
+        DecimalFormat format = new DecimalFormat("@@");
+        return format.format(bytes/KILO_PREFIX/KILO_PREFIX).replace(',', '.')+" MB";
     }
 
     private File getOutputDirectoryToStoreThumbnail(File photo) {
@@ -118,16 +167,27 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+//        ImageView imageView;
+
         if (convertView == null) {
             holder = new ViewHolder();
+//            imageView = new ImageView(context);
             convertView = inflater.inflate(R.layout.single_photo_view, null);
+//            ComparableThumbnail thumbnail  = thumbnails.get(position);
+//            imageView.setImageBitmap(thumbnail.getThumbnail());
+//            if (thumbnail.getThumbnail() != null) {
+//                createFullPhotoView(holder, thumbnail, convertView);
+//            } 
+//            else {
+//                createGroupTotalSizeSeparator(holder, thumbnail, convertView);
+//            }
 
             holder.thumbanilView = (ImageView) convertView.findViewById(R.id.thumbnail);
             holder.photoSize = (TextView) convertView.findViewById(R.id.size);
             holder.lastModified = (TextView) convertView.findViewById(R.id.lastModified);
             holder.selectedThumbnail = (CheckBox) convertView.findViewById(R.id.selected);
 //            holder.checkbox = (CheckBox) convertView.findViewById(R.id.photoCheckBox);
-            convertView.setTag(holder);
+//            convertView.setTag(holder);
 //            imageView = new ImageView(context);
 //            imageView.setLayoutParams(new GridView.LayoutParams(175, 175));
 //            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -156,9 +216,59 @@ public class ImageAdapter extends BaseAdapter {
                 }
             }
         });
+        convertView.setTag(holder);
         processThumbnailState();
 
         return convertView;
+//        return imageView;
+    }
+
+    private void createFullPhotoView(ViewHolder holder, ComparableThumbnail thumbnail, View convertView) {
+        holder.thumbanilView = new ImageView(context);
+//        holder.thumbanilView.setLayoutParams(new LayoutParams(100, 100));
+        holder.thumbanilView.setImageBitmap(thumbnail.getThumbnail());
+
+//        holder.photoSize = new TextView(context);
+//        RelativeLayout.LayoutParams photoSizeParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        
+//        holder.photoSize.setTextSize(18);
+//        photoSizeParams.setMargins(105, 55, 0, 0);
+//        holder.photoSize.setLayoutParams(photoSizeParams);
+//        holder.photoSize.setText(thumbnail.getSize());
+//
+//        holder.lastModified = new TextView(context);
+//        RelativeLayout.LayoutParams lastModifiedParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        lastModifiedParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//        lastModifiedParams.setMargins(105, 0, 0, 0);
+//        holder.photoSize.setTextSize(18);
+//        holder.photoSize.setLayoutParams(lastModifiedParams);
+//        holder.lastModified.setText(formatter.format(thumbnail.getLastModified()));
+//
+//        holder.selectedThumbnail = new CheckBox(context);
+//        RelativeLayout.LayoutParams checkboxParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        checkboxParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//        holder.selectedThumbnail.setChecked(thumbnail.isSelected());
+//        holder.selectedThumbnail.setLayoutParams(checkboxParams);
+//        holder.selectedThumbnail.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CheckBox checkbox = (CheckBox) v;
+//
+//                if (!checkbox.isChecked()) {
+//                    remainingThumbnailIndices.remove(Integer.valueOf(checkbox.getId()));
+//                } else {
+//                    remainingThumbnailIndices.add(checkbox.getId());
+//                }
+//            }
+//        });
+    }
+
+    private void createGroupTotalSizeSeparator(ViewHolder holder, ComparableThumbnail thumbnail, View convertView) {
+        holder.photoSize = new TextView(context);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(105, 55, 0, 0);
+//        holder.photoSize.setLayoutParams(params);
+        holder.photoSize.setText(thumbnail.getSize());
     }
 
     private void processThumbnailState() {

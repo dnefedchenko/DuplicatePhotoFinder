@@ -12,21 +12,9 @@
         android:columnWidth="100dp"
         android:gravity="center"
         android:numColumns="1"
-        android:verticalSpacing="5dp"
+        android:verticalSpacing="1dp"
         android:drawSelectorOnTop="true"
         android:stretchMode="columnWidth" >
     </GridView>
-
-<!--     <GridView android:id="@+id/photoImageGrid" -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_margin="5dp" -->
-<!--         android:columnWidth="100dp" -->
-<!--         android:gravity="center" -->
-<!--         android:numColumns="auto_fit" -->
-<!--         android:verticalSpacing="5dp" -->
-<!--         android:drawSelectorOnTop="true" -->
-<!--         android:stretchMode="columnWidth" > -->
-<!--     </GridView> -->
 
 </RelativeLayout>

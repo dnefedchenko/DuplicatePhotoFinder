@@ -3,12 +3,14 @@ package com.freeman.dpf;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 /**
@@ -18,6 +20,7 @@ import android.widget.Toast;
  *
  */
 public class PhotoListActivity extends Activity {
+//    public class PhotoListActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

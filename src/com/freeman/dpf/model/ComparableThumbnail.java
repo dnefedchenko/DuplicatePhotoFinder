@@ -10,11 +10,10 @@ public class ComparableThumbnail {
     private String size;
     private boolean selected;
 
-    public ComparableThumbnail(Bitmap thumbnail, long lastModified, String size, boolean selected) {
+    public ComparableThumbnail(Bitmap thumbnail, long lastModified, String size) {
         this.thumbnail = thumbnail;
         this.lastModified = new Date(lastModified);
         this.size = size;
-        this.selected = selected;
     }
 
     public Bitmap getThumbnail() {
