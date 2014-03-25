@@ -8,10 +8,10 @@
     <GridView android:id="@+id/thumbnailsGrid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:columnWidth="100dp"
+        android:layout_margin="1dp"
+        
         android:gravity="center"
-        android:numColumns="1"
+        android:numColumns="3"
         android:verticalSpacing="1dp"
         android:drawSelectorOnTop="true"
         android:stretchMode="columnWidth" >

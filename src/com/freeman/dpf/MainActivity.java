@@ -28,6 +28,23 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
+    private boolean isExternalStorageMounted() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ? true : false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    public void scanSystemFolder(View view) throws IOException {
+//        Intent intentToListAllDcimPhotos = new Intent(this, PhotoListActivity.class);
+        Intent intentToListAllDcimPhotos = new Intent(this, SuggestionListActivity.class);
+        intentToListAllDcimPhotos.putStringArrayListExtra(PHOTO_EXTRAS, getDcimFiles());
+        startActivity(intentToListAllDcimPhotos);
+    }
+
     private ArrayList<String> getDcimFiles() throws IOException {
         File dcim = getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
         if (!isExternalStorageMounted()) {
@@ -40,22 +57,6 @@ public class MainActivity extends Activity {
             photos.add(photoFiles[i].getAbsolutePath());
         }
         return photos;
-    }
-
-    private boolean isExternalStorageMounted() {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) ? true : false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    public void scanSystemFolder(View view) throws IOException {
-        Intent intentToListAllDcimPhotos = new Intent(this, PhotoListActivity.class);
-        intentToListAllDcimPhotos.putStringArrayListExtra(PHOTO_EXTRAS, getDcimFiles());
-        startActivity(intentToListAllDcimPhotos);
     }
 }
 

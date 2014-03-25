@@ -12,5 +12,7 @@
     <string name="button_send">Send</string>
     <string name="title_activity_display_message">Send message</string>
     <string name="title_activity_photo_list">PhotoListActivity</string>
+    <string name="title_activity_suggestion_list">SuggestionListActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -10,7 +10,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -30,7 +33,6 @@ public class PhotoListActivity extends Activity {
         Intent intentToListAllDcimPhotos = getIntent();
         ArrayList<String> photoPaths = intentToListAllDcimPhotos.getStringArrayListExtra(MainActivity.PHOTO_EXTRAS);
 
-//        GridView suggestionGrid = (GridView) findViewById(R.id.suggestionGrid);
         GridView suggestionGrid = (GridView) findViewById(R.id.thumbnailsGrid);
         suggestionGrid.setAdapter(new ImageAdapter(this, photoPaths));
 

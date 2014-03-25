@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".SuggestionListActivity" >
+
+    <ListView android:id="@+id/suggestionList"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_weight="2"
+              android:columnWidth="0dp">
+    </ListView>
+
+</LinearLayout>

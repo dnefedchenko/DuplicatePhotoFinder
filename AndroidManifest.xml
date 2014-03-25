@@ -36,6 +36,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.freeman.dpf.MainActivity" />
         </activity>
+        <activity
+            android:name="com.freeman.dpf.RelativeActivity"
+            android:label="@string/title_activity_photo_list" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.freeman.dpf.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.freeman.dpf.SuggestionListActivity"
+            android:label="@string/title_activity_suggestion_list" >
+        </activity>
     </application>
 
 </manifest>

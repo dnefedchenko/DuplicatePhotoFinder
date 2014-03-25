@@ -35,7 +35,6 @@ import com.freeman.dpf.model.ThumbnailComparator;
 
 public class ImageAdapter extends BaseAdapter {
     private final double KILO_PREFIX = 1024.0;
-    private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
     private Context context;
     private List<ComparableThumbnail> thumbnails;
     private LayoutInflater inflater;
@@ -167,26 +166,16 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-//        ImageView imageView;
 
         if (convertView == null) {
             holder = new ViewHolder();
-//            imageView = new ImageView(context);
             convertView = inflater.inflate(R.layout.single_photo_view, null);
-//            ComparableThumbnail thumbnail  = thumbnails.get(position);
-//            imageView.setImageBitmap(thumbnail.getThumbnail());
-//            if (thumbnail.getThumbnail() != null) {
-//                createFullPhotoView(holder, thumbnail, convertView);
-//            } 
-//            else {
-//                createGroupTotalSizeSeparator(holder, thumbnail, convertView);
-//            }
 
             holder.thumbanilView = (ImageView) convertView.findViewById(R.id.thumbnail);
-            holder.photoSize = (TextView) convertView.findViewById(R.id.size);
-            holder.lastModified = (TextView) convertView.findViewById(R.id.lastModified);
-            holder.selectedThumbnail = (CheckBox) convertView.findViewById(R.id.selected);
-//            holder.checkbox = (CheckBox) convertView.findViewById(R.id.photoCheckBox);
+//            holder.photoSize = (TextView) convertView.findViewById(R.id.size);
+//            holder.lastModified = (TextView) convertView.findViewById(R.id.lastModified);
+//            holder.selectedThumbnail = (CheckBox) convertView.findViewById(R.id.selected);
+            holder.checkbox = (CheckBox) convertView.findViewById(R.id.photoCheckBox);
 //            convertView.setTag(holder);
 //            imageView = new ImageView(context);
 //            imageView.setLayoutParams(new GridView.LayoutParams(175, 175));
@@ -199,12 +188,12 @@ public class ImageAdapter extends BaseAdapter {
 
         ComparableThumbnail thumbnail  = thumbnails.get(position);
         holder.thumbanilView.setImageBitmap(thumbnail.getThumbnail());
-        holder.photoSize.setText(thumbnail.getSize());
-        holder.lastModified.setText(formatter.format(thumbnail.getLastModified()));
-        holder.selectedThumbnail.setChecked(thumbnail.isSelected());
-        holder.selectedThumbnail.setId(position);
+//        holder.photoSize.setText(thumbnail.getSize());
+//        holder.lastModified.setText(formatter.format(thumbnail.getLastModified()));
+        holder.checkbox.setChecked(thumbnail.isSelected());
+//        holder.selectedThumbnail.setId(position);
 
-        holder.selectedThumbnail.setOnClickListener(new OnClickListener() {
+        holder.checkbox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckBox checkbox = (CheckBox) v;
@@ -220,7 +209,6 @@ public class ImageAdapter extends BaseAdapter {
         processThumbnailState();
 
         return convertView;
-//        return imageView;
     }
 
     private void createFullPhotoView(ViewHolder holder, ComparableThumbnail thumbnail, View convertView) {
@@ -280,7 +268,7 @@ public class ImageAdapter extends BaseAdapter {
     class ViewHolder {
         ImageView thumbanilView;
         TextView photoSize;
-        TextView lastModified;
-        CheckBox selectedThumbnail;
+//        TextView lastModified;
+        CheckBox checkbox;
     }
 }
