@@ -31,12 +31,19 @@ import com.freeman.dpf.model.ThumbnailComparator;
 public class SuggestionListAdapter extends BaseAdapter {
     private final double KILO_PREFIX = 1024.0;
 
+    private static final int FULL_VIEW_TYPE = 0;
+    private static final int SEPARATOR_TYPE = 1;
+    private static final int TYPE_MAX_COUNT = SEPARATOR_TYPE + 1;
+
     private Context context;
     private List<ComparableThumbnail> thumbnails;
+
+    private List<Integer> separatorViewIndices;
 
     public SuggestionListAdapter(Context context, ArrayList<String> photos) {
         this.context = context;
         this.thumbnails = new ArrayList<ComparableThumbnail>();
+        this.separatorViewIndices = new ArrayList<Integer>();
         createPhotoThumnbails(photos);
         Collections.sort(thumbnails, new ThumbnailComparator());
         splitOnGroupsByDateSimilarity();
@@ -129,6 +136,7 @@ public class SuggestionListAdapter extends BaseAdapter {
                 iterator.previous();
                 iterator.add(new ComparableThumbnail(null, 0, String.valueOf(totalGroupSize)+" MB"));
                 totalGroupSize = 0;
+                separatorViewIndices.add(iterator.nextIndex() - 1);
             }
 
             previousYear = year;
@@ -163,68 +171,77 @@ public class SuggestionListAdapter extends BaseAdapter {
         TextView separatorView;
         CheckBox selectedThumbnail;
 
-        LinearLayout layout = new LinearLayout(context);
+        LinearLayout rootLayout = new LinearLayout(context);
 
-        if (convertView == null) {
+//        int type = getItemViewType(position);
+//        if (convertView == null) {
+//            switch (type) {
+//            case FULL_VIEW_TYPE:
+//                thumbnailView = new ImageView(context);
+//                thumbnailView.setImageBitmap(thumbnails.get(position).getThumbnail());
+//                thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
+//  
+//                rootLayout = new LinearLayout(context);
+//                rootLayout.setOrientation(LinearLayout.VERTICAL);
+//                rootLayout.setPadding(1, 1, 1, 1);
+//  
+//                rootLayout.addView(thumbnailView);
+//                break;
+//
+//            case SEPARATOR_TYPE:
+//                separatorView = new TextView(context);
+//                separatorView.setText(thumbnails.get(position).getSize());
+//
+//                rootLayout.setOrientation(LinearLayout.VERTICAL);
+//                rootLayout.setPadding(1, 1, 1, 1);
+//
+//                rootLayout.addView(separatorView);
+//                break;
+//            }
             ComparableThumbnail thumbnail = thumbnails.get(position);
             if (thumbnail.getThumbnail() != null) {
-//                createFullView(layout, thumbnail);
 
               thumbnailView = new ImageView(context);
               thumbnailView.setImageBitmap(thumbnails.get(position).getThumbnail());
               thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
   
-              layout = new LinearLayout(context);
-              layout.setOrientation(0);
-              layout.setPadding(1, 1, 1, 1);
+              rootLayout = new LinearLayout(context);
+              rootLayout.setOrientation(LinearLayout.VERTICAL);
+              rootLayout.setPadding(1, 1, 1, 1);
   
-              layout.addView(thumbnailView);
+              rootLayout.addView(thumbnailView);
             } else {
-//                createGroupSeparator(layout, thumbnail);
-
                 separatorView = new TextView(context);
                 separatorView.setText(thumbnail.getSize());
 
-                layout.setOrientation(0);
-                layout.setPadding(1, 1, 1, 1);
+                rootLayout.setOrientation(LinearLayout.VERTICAL);
+                rootLayout.setPadding(1, 1, 1, 1);
 
-                layout.addView(separatorView);
+                rootLayout.addView(separatorView);
             }
-        }
-        else {
-            layout = (LinearLayout) convertView;
+//        }
+//        else {
+//            rootLayout = (LinearLayout) convertView;
 
-            View view = layout.getChildAt(0);
-            if (view.getClass().getSimpleName().equals("TextView")) {
-                separatorView = (TextView) view;
-                separatorView.setText(thumbnails.get(position).getSize());
-            } else {
-                thumbnailView = (ImageView) view;
-                thumbnailView.setImageBitmap(thumbnails.get(position).getThumbnail());
-            }
-        }
-        return layout;
+//            View view = rootLayout.getChildAt(0);
+//            if (isTextView(view)) {
+//                separatorView = (TextView) view;
+//                separatorView.setText(thumbnails.get(position).getSize());
+//            } else {
+//                thumbnailView = (ImageView) view;
+//                thumbnailView.setImageBitmap(thumbnails.get(position).getThumbnail());
+//            }
+//        }
+        return rootLayout;
     }
 
-    private void createFullView(LinearLayout layout, ComparableThumbnail thumbnail) {
-        ImageView thumbnailView = new ImageView(context);
-        thumbnailView.setImageBitmap(thumbnail.getThumbnail());
-        thumbnailView.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
-
-        layout = new LinearLayout(context);
-        layout.setOrientation(0);
-        layout.setPadding(1, 1, 1, 1);
-
-        layout.addView(thumbnailView);
+    @Override
+    public int getItemViewType(int position) {
+        return separatorViewIndices.contains(position) ? SEPARATOR_TYPE : FULL_VIEW_TYPE;
     }
 
-    private void createGroupSeparator(LinearLayout layout, ComparableThumbnail thumbnail) {
-        TextView separatorView = new TextView(context);
-        separatorView.setText(thumbnail.getSize());
-
-        layout.setOrientation(0);
-        layout.setPadding(1, 1, 1, 1);
-
-        layout.addView(separatorView);
+    @Override
+    public int getViewTypeCount() {
+        return TYPE_MAX_COUNT;
     }
 }

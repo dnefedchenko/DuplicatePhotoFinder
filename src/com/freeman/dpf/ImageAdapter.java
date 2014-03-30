@@ -265,7 +265,7 @@ public class ImageAdapter extends BaseAdapter {
         }
     }
 
-    class ViewHolder {
+    public static class ViewHolder {
         ImageView thumbanilView;
         TextView photoSize;
 //        TextView lastModified;

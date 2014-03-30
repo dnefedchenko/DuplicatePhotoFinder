@@ -22,10 +22,9 @@ public class SuggestionListActivity extends Activity {
         suggestionList.setAdapter(new SuggestionListAdapter(this, photoPaths));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.suggestion_list, menu);
-        return true;
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.suggestion_list, menu);
+//        return true;
+//    }
 }
