@@ -13,6 +13,7 @@
     <string name="title_activity_display_message">Send message</string>
     <string name="title_activity_photo_list">PhotoListActivity</string>
     <string name="title_activity_suggestion_list">SuggestionListActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="scan_gallery">Scan gallery</string>
+    <string name="thumbnail_description">Gallery photo</string>
 
 </resources>

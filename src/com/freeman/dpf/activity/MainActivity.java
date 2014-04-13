@@ -1,4 +1,4 @@
-package com.freeman.dpf;
+package com.freeman.dpf.activity;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 
+import com.freeman.dpf.R;
+
 /**
  *  Duplicate photo finder main activity.
  * 
@@ -25,7 +27,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity_layout);
     }
 
     private boolean isExternalStorageMounted() {
@@ -39,7 +41,6 @@ public class MainActivity extends Activity {
     }
 
     public void scanSystemFolder(View view) throws IOException {
-//        Intent intentToListAllDcimPhotos = new Intent(this, PhotoListActivity.class);
         Intent intentToListAllDcimPhotos = new Intent(this, SuggestionListActivity.class);
         intentToListAllDcimPhotos.putStringArrayListExtra(PHOTO_EXTRAS, getDcimFiles());
         startActivity(intentToListAllDcimPhotos);

@@ -21,7 +21,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.freeman.dpf.MainActivity"
+            android:name="com.freeman.dpf.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,21 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.freeman.dpf.PhotoListActivity"
-            android:label="@string/title_activity_photo_list" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.freeman.dpf.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.freeman.dpf.RelativeActivity"
-            android:label="@string/title_activity_photo_list" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.freeman.dpf.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.freeman.dpf.SuggestionListActivity"
+            android:name="com.freeman.dpf.activity.SuggestionListActivity"
             android:label="@string/title_activity_suggestion_list" >
         </activity>
     </application>

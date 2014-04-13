@@ -11,8 +11,15 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int blue=0x7f040000;
-        public static final int white=0x7f040001;
+        public static final int dark_blue=0x7f040002;
+        public static final int dark_green=0x7f040003;
+        public static final int dark_orange=0x7f040006;
+        public static final int dark_red=0x7f040008;
+        public static final int light_blue=0x7f040001;
+        public static final int light_green=0x7f040004;
+        public static final int light_orange=0x7f040005;
+        public static final int light_red=0x7f040007;
+        public static final int white=0x7f040000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -38,21 +45,19 @@ public final class R {
         public static final int sample_7=0x7f02000a;
     }
     public static final class id {
-        public static final int action_settings=0x7f090007;
-        public static final int photoCheckBox=0x7f090005;
-        public static final int scan_suggestion_message=0x7f090000;
-        public static final int singlePhotoLayout=0x7f090003;
-        public static final int suggestionGrid=0x7f090006;
-        public static final int suggestionList=0x7f090001;
-        public static final int thumbnail=0x7f090004;
-        public static final int thumbnailsGrid=0x7f090002;
+        public static final int action_settings=0x7f090006;
+        public static final int lastModified=0x7f090004;
+        public static final int selected=0x7f090005;
+        public static final int singlePhotoLayout=0x7f090000;
+        public static final int size=0x7f090003;
+        public static final int thumbnail=0x7f090001;
+        public static final int thumnbailLayout=0x7f090002;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_suggestion_list=0x7f030001;
-        public static final int photo_selection_view=0x7f030002;
-        public static final int single_photo_view=0x7f030003;
-        public static final int suggestion_view=0x7f030004;
+        public static final int full_layout=0x7f030000;
+        public static final int main_activity_layout=0x7f030001;
+        public static final int separator_layout=0x7f030002;
+        public static final int suggestion_list_activity_layout=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -65,11 +70,12 @@ public final class R {
         public static final int browse_scanning_button=0x7f060006;
         public static final int button_send=0x7f060008;
         public static final int entire_device_scanning_button=0x7f060005;
-        public static final int hello_world=0x7f06000c;
+        public static final int scan_gallery=0x7f06000c;
         public static final int scan_suggestion_message=0x7f060003;
         public static final int suggestion_view=0x7f060007;
         public static final int system_folder_scanning_button=0x7f060004;
         public static final int thumbnailContentDescription=0x7f060002;
+        public static final int thumbnail_description=0x7f06000d;
         public static final int title_activity_display_message=0x7f060009;
         public static final int title_activity_photo_list=0x7f06000a;
         public static final int title_activity_suggestion_list=0x7f06000b;

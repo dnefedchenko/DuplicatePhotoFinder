@@ -4,11 +4,11 @@
     android:orientation="vertical"
     tools:context=".SuggestionListActivity" >
 
-    <ListView android:id="@+id/suggestionList"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_weight="2"
-              android:columnWidth="0dp">
-    </ListView>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:drawSelectorOnTop="false"
+        android:choiceMode="multipleChoice"/>
 
 </LinearLayout>
