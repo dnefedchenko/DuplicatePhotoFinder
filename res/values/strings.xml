@@ -2,6 +2,12 @@
 <resources>
 
     <string name="app_name">PhFinder</string>
+    <string name="application_logo">Duplicate Photo Finder</string>
+    <string name="comparison_severity">Comparison sevetiry</string>
+    <string name="adjust_similarity_prompt">Drag to adjust similarity</string>
+    <string name="one_event_title">One event</string>
+    <string name="quite_similar_title">Quite similar</string>
+    <string name="identical_title">Identical</string>
     <string name="action_settings">Settings</string>
     <string name="action_delete">Remove selected duplicates</string>
     <string name="thumbnailContentDescription">thumbnail of a real photo</string>
@@ -14,7 +20,7 @@
     <string name="title_activity_display_message">Send message</string>
     <string name="title_activity_photo_list">PhotoListActivity</string>
     <string name="title_activity_suggestion_list"></string>
-    <string name="scan_gallery">Scan gallery</string>
+    <string name="find_similar_photos">Find Similar Photos</string>
     <string name="thumbnail_description">Gallery photo</string>
 
 </resources>

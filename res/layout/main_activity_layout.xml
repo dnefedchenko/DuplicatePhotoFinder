@@ -1,14 +1,95 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical">
+    android:paddingRight="16dp" >
 
-    <Button 
+    <!-- Duplicate photos finder logo -->
+    <ImageView android:id="@+id/application_logo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/dpf_logo"
+        android:contentDescription="@string/application_logo"/>
+
+    <!-- Application title -->
+    <TextView android:id="@+id/application_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="scanSystemFolder"
-        android:text="@string/scan_gallery" />
-</LinearLayout>
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/application_logo"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="@string/application_logo"
+        />
+
+    <!-- Comparison severity examples -->
+    <ImageView android:id="@+id/kitten"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/application_title"
+        android:src="@drawable/kitten"
+        android:contentDescription="@string/comparison_severity"
+        />
+
+    <ImageView android:id="@+id/lion"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_title"
+        android:src="@drawable/kitten"
+        android:contentDescription="@string/comparison_severity"
+        />
+
+    <!-- Adjust similarity prompt -->
+    <TextView android:id="@+id/adjust_similarity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/lion"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="@string/adjust_similarity_prompt"
+        />
+
+    <!-- Comparison severity seek bar -->
+    <SeekBar android:id="@+id/comparison_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adjust_similarity"
+        android:layout_marginTop="15dp"
+        android:max="10"/>
+
+    <TextView android:id="@+id/one_event_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comparison_seekbar"
+        android:text="@string/one_event_title"
+        />
+
+    <TextView android:id="@+id/quite_similar_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comparison_seekbar"
+        android:gravity="center"
+        android:text="@string/quite_similar_title"
+        />
+
+    <TextView android:id="@+id/identical_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comparison_seekbar"
+        android:layout_alignParentRight="true"
+        android:text="@string/identical_title"
+        />
+
+    <Button android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/one_event_title"
+        android:layout_marginTop="15dp"
+        android:background="#33B5E5"
+        android:onClick="findSimilarPhotos"
+        android:text="@string/find_similar_photos"/>
+</RelativeLayout>

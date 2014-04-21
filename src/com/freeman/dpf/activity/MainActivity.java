@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.freeman.dpf.R;
 
@@ -24,10 +26,16 @@ import com.freeman.dpf.R;
 public class MainActivity extends Activity {
     public final static String PHOTO_EXTRAS = "com.freeman.photofinder.PHOTO_EXTRAS";
 
+    private SeekBar comparisonSeverityBar;
+    private TextView comparisonSeverityText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_layout);
+
+        comparisonSeverityBar = (SeekBar) findViewById(R.id.comparison_seekbar);
+        comparisonSeverityBar.setOnSeekBarChangeListener(null);
     }
 
     private boolean isExternalStorageMounted() {
@@ -40,7 +48,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    public void scanSystemFolder(View view) throws IOException {
+    public void findSimilarPhotos(View view) throws IOException {
         Intent intentToListAllDcimPhotos = new Intent(this, SuggestionListActivity.class);
         intentToListAllDcimPhotos.putStringArrayListExtra(PHOTO_EXTRAS, getDcimFiles());
         startActivity(intentToListAllDcimPhotos);
