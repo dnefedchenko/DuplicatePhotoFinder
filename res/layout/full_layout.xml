@@ -34,13 +34,13 @@
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="65dp"
+        android:layout_marginRight="55dp"
         android:background="@color/dark_green"/>
 
     <CheckBox android:id="@+id/selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="16dp"
+        android:paddingRight="10dp"
         android:layout_marginTop="20dp"
         android:layout_alignParentRight="true">
     </CheckBox>

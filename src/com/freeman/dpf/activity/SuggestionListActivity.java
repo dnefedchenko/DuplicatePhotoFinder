@@ -20,9 +20,14 @@ import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.freeman.dpf.R;
 import com.freeman.dpf.model.ComparableThumbnail;
@@ -37,6 +42,7 @@ public class SuggestionListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.suggestion_list_activity_layout);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intentToListAllDcimPhotos = getIntent();
 
@@ -200,9 +206,33 @@ public class SuggestionListActivity extends ListActivity {
         
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.suggestion_list, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.suggestion_list_activity_items, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.duplicates_amount_text);
+        TextView duplicateTextView = (TextView) item.getActionView().findViewById(R.id.duplicate_text);
+        duplicateTextView.setText("582 duplicates(1.32 GB)");
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                deleteSelectedDuplicates();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteSelectedDuplicates() {
+        Toast.makeText(this, "Performing duplicate deleting...", Toast.LENGTH_SHORT).show();
+    }
 }
