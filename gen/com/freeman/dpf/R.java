@@ -36,17 +36,11 @@ public final class R {
         public static final int grid_color_selector=0x7f020001;
         public static final int ic_action_delete=0x7f020002;
         public static final int ic_launcher=0x7f020003;
-        public static final int kitten=0x7f020004;
-        public static final int lion=0x7f020005;
-        public static final int photo_stub=0x7f020006;
-        public static final int sample_0=0x7f020007;
-        public static final int sample_1=0x7f020008;
-        public static final int sample_2=0x7f020009;
-        public static final int sample_3=0x7f02000a;
-        public static final int sample_4=0x7f02000b;
-        public static final int sample_5=0x7f02000c;
-        public static final int sample_6=0x7f02000d;
-        public static final int sample_7=0x7f02000e;
+        public static final int identical=0x7f020004;
+        public static final int kitten_blue=0x7f020005;
+        public static final int one_event=0x7f020006;
+        public static final int photo_stub=0x7f020007;
+        public static final int quite_similar=0x7f020008;
     }
     public static final class id {
         public static final int action_delete=0x7f090013;
@@ -58,12 +52,12 @@ public final class R {
         public static final int duplicateLayout=0x7f090000;
         public static final int duplicate_text=0x7f090001;
         public static final int duplicates_amount_text=0x7f090012;
+        public static final int first_comparison_sample=0x7f09000a;
         public static final int identical_title=0x7f090010;
-        public static final int kitten=0x7f09000a;
         public static final int lastModified=0x7f090006;
-        public static final int lion=0x7f09000b;
         public static final int one_event_title=0x7f09000e;
         public static final int quite_similar_title=0x7f09000f;
+        public static final int second_comparison_sample=0x7f09000b;
         public static final int selected=0x7f090007;
         public static final int singlePhotoLayout=0x7f090002;
         public static final int size=0x7f090005;

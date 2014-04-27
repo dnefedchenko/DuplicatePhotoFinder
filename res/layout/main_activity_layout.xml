@@ -25,21 +25,21 @@
         />
 
     <!-- Comparison severity examples -->
-    <ImageView android:id="@+id/kitten"
+    <ImageView android:id="@+id/first_comparison_sample"
         android:layout_width="155dp"
         android:layout_height="155dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/application_title"
-        android:src="@drawable/kitten"
+        android:src="@drawable/identical"
         android:contentDescription="@string/comparison_severity"
         />
 
-    <ImageView android:id="@+id/lion"
+    <ImageView android:id="@+id/second_comparison_sample"
         android:layout_width="155dp"
         android:layout_height="155dp"
         android:layout_alignParentRight="true"
         android:layout_below="@id/application_title"
-        android:src="@drawable/kitten"
+        android:src="@drawable/identical"
         android:contentDescription="@string/comparison_severity"
         />
 
@@ -48,7 +48,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_below="@id/lion"
+        android:layout_below="@id/second_comparison_sample"
         android:gravity="center"
         android:textSize="22sp"
         android:text="@string/adjust_similarity_prompt"
