@@ -74,7 +74,8 @@ public final class R {
     public static final class menu {
         public static final int main=0x7f080000;
         public static final int photo_list=0x7f080001;
-        public static final int suggestion_list_activity_items=0x7f080002;
+        public static final int progress=0x7f080002;
+        public static final int suggestion_list_activity_items=0x7f080003;
     }
     public static final class string {
         public static final int action_delete=0x7f060008;
@@ -89,6 +90,7 @@ public final class R {
         public static final int find_similar_photos=0x7f060013;
         public static final int identical_title=0x7f060006;
         public static final int one_event_title=0x7f060004;
+        public static final int progress_bar_message=0x7f060016;
         public static final int quite_similar_title=0x7f060005;
         public static final int scan_suggestion_message=0x7f06000a;
         public static final int suggestion_view=0x7f06000e;
@@ -97,6 +99,7 @@ public final class R {
         public static final int thumbnail_description=0x7f060014;
         public static final int title_activity_display_message=0x7f060010;
         public static final int title_activity_photo_list=0x7f060011;
+        public static final int title_activity_progress=0x7f060015;
         public static final int title_activity_suggestion_list=0x7f060012;
     }
     public static final class style {

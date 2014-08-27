@@ -3,9 +3,11 @@ package com.freeman.dpf.activity;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -90,7 +92,18 @@ public class MainActivity extends Activity {
             System.out.println("Media storage is not mounted.");
             return null;
         }
-        File[] photoFiles = dcim.listFiles();
+
+        FilenameFilter photoExtensionFilter = new FilenameFilter() {
+            String fileExtension = ".jpg";
+
+            @Override
+            @SuppressLint("DefaultLocale")
+            public boolean accept(File dir, String filename) {
+                return filename.toLowerCase().endsWith(fileExtension) ? true : false;
+            }
+        };
+
+        File[] photoFiles = dcim.listFiles(photoExtensionFilter);
         ArrayList<String> photos = new ArrayList<String>(photoFiles.length);
         for (int i = 0; i < photoFiles.length - 1; i++) {
             photos.add(photoFiles[i].getAbsolutePath());

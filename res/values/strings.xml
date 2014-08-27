@@ -22,5 +22,7 @@
     <string name="title_activity_suggestion_list"></string>
     <string name="find_similar_photos">Find Similar Photos</string>
     <string name="thumbnail_description">Gallery photo</string>
+    <string name="title_activity_progress">ProgressActivity</string>
+    <string name="progress_bar_message">Galery scanning...</string>
 
 </resources>

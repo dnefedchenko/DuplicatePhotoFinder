@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,9 +23,13 @@ import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,19 +40,34 @@ import com.freeman.dpf.model.ThumbnailComparator;
 import com.freeman.dpf.view.RowView;
 
 public class SuggestionListActivity extends ListActivity {
+    private static final int DIALOG_KEY = 0;
+
     private BigDecimal KILO_PREFIX = new BigDecimal("1024");
     private final List<RowView> rows;
 
-    private List<ComparableThumbnail> thumbnails;
     private List<Integer> separatorViewIndices;
+    private ProgressDialog progressDialog;
 
     public SuggestionListActivity() {
         this.rows = new ArrayList<RowView>();
-        this.thumbnails = new ArrayList<ComparableThumbnail>();
         this.separatorViewIndices = new ArrayList<Integer>();
     }
 
     @Override
+    protected Dialog onCreateDialog(int id) {
+        switch(id) {
+            case DIALOG_KEY:
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.setMessage("Galery scanning...");
+                progressDialog.setCancelable(false);
+                return progressDialog;
+        }
+        return null;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.suggestion_list_activity_layout);
@@ -54,34 +75,10 @@ public class SuggestionListActivity extends ListActivity {
 
         Intent intentToListAllDcimPhotos = getIntent();
 
-        ArrayList<String> photoPaths = intentToListAllDcimPhotos.getStringArrayListExtra(MainActivity.PHOTO_EXTRAS);
+        final ArrayList<String> photoPaths = intentToListAllDcimPhotos.getStringArrayListExtra(MainActivity.PHOTO_EXTRAS);
+
+        showDialog(DIALOG_KEY);
         new ThumbnailProcessor().execute(photoPaths.toArray(new String[] {}));
-
-    }
-
-    public void createPhotoThumnbails(List<String> photos) {
-        for (String photo: photos) {
-            File photoFile = new File(photo);
-            File thumbnailPath = getOutputDirectoryToStoreThumbnail(photoFile);
-            long lastModified = photoFile.lastModified();
-            String photoSize = extractSize(photoFile);
-            try {
-                if (thumbnailPath.exists()) {
-                    ComparableThumbnail thumbnail = new ComparableThumbnail(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(thumbnailPath.getAbsolutePath()), 100, 100), lastModified, photoSize); 
-                    thumbnails.add(thumbnail);
-                    continue;
-                }
-                Bitmap thumbnail = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photo), 100, 100);
-                FileOutputStream out = new FileOutputStream(thumbnailPath);
-                thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                thumbnails.add(new ComparableThumbnail(thumbnail, lastModified, photoSize));
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private File getOutputDirectoryToStoreThumbnail(File photo) {
@@ -115,7 +112,7 @@ public class SuggestionListActivity extends ListActivity {
         return megabytes.toString() + "MB";
     }
 
-    private void splitOnGroupsByDate() {
+    private void splitOnGroupsByDate(List<ComparableThumbnail> thumbnails) {
         ListIterator<ComparableThumbnail> iterator = thumbnails.listIterator();
         int previousYear = -1;
         int previousMonth = 0;
@@ -189,26 +186,56 @@ public class SuggestionListActivity extends ListActivity {
         Toast.makeText(this, "Performing duplicate deleting...", Toast.LENGTH_SHORT).show();
     }
 
-    class ThumbnailProcessor extends AsyncTask<String, Integer, Void> {
+    class ThumbnailProcessor extends AsyncTask<String, Integer, List<ComparableThumbnail>> {
         @Override
-        protected Void doInBackground(String... photos) {
-            createPhotoThumnbails(Arrays.asList(photos));
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
+
+        @Override
+        protected List<ComparableThumbnail> doInBackground(String... photos) {
+            List<ComparableThumbnail> thumbnails = new ArrayList<ComparableThumbnail>();
+
+            for (int i = 0; i < photos.length; i++) {
+                File photoFile = new File(photos[i]);
+                File thumbnailPath = getOutputDirectoryToStoreThumbnail(photoFile);
+                long lastModified = photoFile.lastModified();
+                String photoSize = extractSize(photoFile);
+                try {
+                    if (thumbnailPath.exists()) {
+                        ComparableThumbnail thumbnail = new ComparableThumbnail(ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(thumbnailPath.getAbsolutePath()), 100, 100), lastModified, photoSize); 
+                        thumbnails.add(thumbnail);
+                        publishProgress((int)(((i + 1)/(float)photos.length)*100));
+                        continue;
+                    }
+                    Bitmap thumbnail = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(photos[i]), 100, 100);
+                    FileOutputStream out = new FileOutputStream(thumbnailPath);
+                    thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    thumbnails.add(new ComparableThumbnail(thumbnail, lastModified, photoSize));
+                    out.close();
+                    publishProgress((int)(((i + 1)/(float)photos.length)*100));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             Collections.sort(thumbnails, new ThumbnailComparator());
-            publishProgress(thumbnails.size());
 
-            splitOnGroupsByDate();
-            return null;
+            splitOnGroupsByDate(thumbnails);
+            return thumbnails;
         }
 
         @Override
-        protected void onProgressUpdate(Integer... progress) {
-            String progressMessage = progress[0]+" duplicates found";
-            Toast.makeText(SuggestionListActivity.this, progressMessage, Toast.LENGTH_LONG).show();
+        protected void onProgressUpdate(Integer... progressValues) {
+            progressDialog.setProgress(progressValues[0]);
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(List<ComparableThumbnail> thumbnails) {
             setListAdapter(new SuggestionAdapter(SuggestionListActivity.this, rows, thumbnails));
+            progressDialog.dismiss();
         }
     }
 }
